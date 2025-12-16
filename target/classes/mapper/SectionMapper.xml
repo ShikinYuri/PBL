@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forum.mapper.SectionMapper">
+
+    <resultMap id="BaseResultMap" type="com.forum.entity.Section">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="post_count" property="postCount"/>
+        <result column="sort" property="sort"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, description, post_count, sort, status, create_time, update_time
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from section
+        where id = #{id} and status = 1
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from section
+        where status = 1
+        order by sort asc, id asc
+    </select>
+
+    <insert id="insert" parameterType="com.forum.entity.Section" useGeneratedKeys="true" keyProperty="id">
+        insert into section (name, description, post_count, sort, status)
+        values (#{name}, #{description}, #{postCount}, #{sort}, #{status})
+    </insert>
+
+    <update id="update" parameterType="com.forum.entity.Section">
+        update section
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updatePostCount">
+        update section set post_count = #{count} where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        update section set status = 0 where id = #{id}
+    </delete>
+
+</mapper>

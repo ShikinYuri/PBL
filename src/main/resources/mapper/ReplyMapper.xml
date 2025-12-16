@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forum.mapper.ReplyMapper">
+
+    <resultMap id="BaseResultMap" type="com.forum.entity.Reply">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="post_id" property="postId"/>
+        <result column="user_id" property="userId"/>
+        <result column="floor" property="floor"/>
+        <result column="reply_user_id" property="replyUserId"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="reply_username" property="replyUsername"/>
+        <result column="reply_nickname" property="replyNickname"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        r.id, r.content, r.post_id, r.user_id, r.floor, r.reply_user_id, r.status,
+        r.create_time, r.update_time
+    </sql>
+
+    <sql id="Join_Column_List">
+        r.id, r.content, r.post_id, r.user_id, r.floor, r.reply_user_id, r.status,
+        r.create_time, r.update_time, u.username, u.nickname,
+        ru.username as reply_username, ru.nickname as reply_nickname
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap">
+        select <include refid="Join_Column_List"/>
+        from reply r
+        left join user u on r.user_id = u.id
+        left join user ru on r.reply_user_id = ru.id
+        where r.id = #{id} and r.status = 1
+    </select>
+
+    <select id="findByPostId" resultMap="BaseResultMap">
+        select <include refid="Join_Column_List"/>
+        from reply r
+        left join user u on r.user_id = u.id
+        left join user ru on r.reply_user_id = ru.id
+        where r.post_id = #{postId} and r.status = 1
+        order by r.floor asc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="findByUserId" resultMap="BaseResultMap">
+        select <include refid="Join_Column_List"/>
+        from reply r
+        left join user u on r.user_id = u.id
+        left join user ru on r.reply_user_id = ru.id
+        where r.user_id = #{userId} and r.status = 1
+        order by r.create_time desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="countByPostId" resultType="int">
+        select count(*) from reply where post_id = #{postId} and status = 1
+    </select>
+
+    <select id="countByUserId" resultType="int">
+        select count(*) from reply where user_id = #{userId} and status = 1
+    </select>
+
+    <select id="getMaxFloorByPostId" resultType="int">
+        select coalesce(max(floor), 0) from reply where post_id = #{postId}
+    </select>
+
+    <insert id="insert" parameterType="com.forum.entity.Reply" useGeneratedKeys="true" keyProperty="id">
+        insert into reply (content, post_id, user_id, floor, reply_user_id, status)
+        values (#{content}, #{postId}, #{userId}, #{floor}, #{replyUserId}, #{status})
+    </insert>
+
+    <update id="update" parameterType="com.forum.entity.Reply">
+        update reply
+        <set>
+            <if test="content != null">content = #{content},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        update reply set status = 0 where id = #{id}
+    </delete>
+
+</mapper>
