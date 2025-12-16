@@ -17,11 +17,7 @@
                     <span style="font-size: 48px; color: #999;">👤</span>
                 </div>
                 <h3>${user.nickname ne null ? user.nickname : user.username}</h3>
-<<<<<<< HEAD
                 <c:if test="${not empty sessionScope.user and (sessionScope.user.role == 1 or sessionScope.user.role == '1')}">
-=======
-                <c:if test="${not empty user and (user.role == 1 or user.role == '1')}">
->>>>>>> main
                     <p style="color: #dc3545; font-weight: bold;">管理员</p>
                 </c:if>
                 <p style="color: #666; margin-top: 10px;">
@@ -62,11 +58,7 @@
             <div style="display: flex; gap: 15px;">
                 <a href="${pageContext.request.contextPath}/post/my" class="btn btn-secondary">我的帖子</a>
                 <a href="${pageContext.request.contextPath}/reply/my" class="btn btn-secondary">我的回复</a>
-<<<<<<< HEAD
                 <c:if test="${not empty sessionScope.user and (sessionScope.user.role == 1 or sessionScope.user.role == '1')}">
-=======
-                <c:if test="${not empty user and (user.role == 1 or user.role == '1')}">
->>>>>>> main
                     <a href="${pageContext.request.contextPath}/user/manage" class="btn btn-danger">用户管理</a>
                 </c:if>
                 <a href="${pageContext.request.contextPath}/user/logout" class="btn btn-danger" style="margin-left: auto;">退出登录</a>
