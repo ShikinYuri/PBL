@@ -34,6 +34,14 @@ public class UserController {
                                      @RequestParam String password,
                                      HttpSession session) {
         Map<String, Object> result = new HashMap<>();
+        // 先判断用户是否存在且被禁用，优先返回禁用提示
+        User exists = userService.findByUsername(username);
+        if (exists != null && exists.getStatus() != null && exists.getStatus() == 0) {
+            result.put("success", false);
+            result.put("message", "你已被封禁");
+            return result;
+        }
+
         User user = userService.login(username, password);
         if (user != null) {
             session.setAttribute("user", user);

@@ -100,7 +100,7 @@
         if (confirm('确定要' + action + '这个用户吗？')) {
             var _ctx = '${pageContext.request.contextPath}';
             ajaxRequest(_ctx + '/user/updateStatus', 'POST', {
-                id: userId,
+                userId: userId,
                 status: status
             }, function(response) {
                 if (response.success) {
