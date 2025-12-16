@@ -3,6 +3,7 @@ package com.forum.service.impl;
 import com.forum.entity.Reply;
 import com.forum.mapper.ReplyMapper;
 import com.forum.service.ReplyService;
+import com.forum.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Autowired
     private ReplyMapper replyMapper;
+    @Autowired
+    private PostService postService;
 
     @Override
     public boolean createReply(Reply reply) {
@@ -36,7 +39,14 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public boolean deleteReply(Long id) {
-        return replyMapper.deleteById(id) > 0;
+        // 获取回复以便知道所属帖子
+        Reply r = replyMapper.findById(id);
+        boolean ok = replyMapper.deleteById(id) > 0;
+        if (ok && r != null && r.getPostId() != null) {
+            // 调整帖子回复计数为数据库真实值
+            postService.updateReplyCount(r.getPostId());
+        }
+        return ok;
     }
 
     @Override
