@@ -1,9 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%
-    request.setAttribute("pageTitle", section != null ? section.name : "版块");
-%>
 <jsp:include page="../common/header.jsp"/>
 
 <div class="container">
@@ -30,7 +27,7 @@
                         <div style="border-bottom: 1px solid #eee; padding: 15px 0;">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div style="flex: 1;">
-                                    <a href="${pageContext.request.contextPath}/post/detail/${post.id}" style="color: #333; text-decoration: none; font-size: 16px;">
+                                    <a href="${pageContext.request.contextPath}/reply/list/${post.id}" style="color: #333; text-decoration: none; font-size: 16px;">
                                         <c:if test="${post.isTop eq 1}">
                                             <span style="color: #dc3545; font-weight: bold;">[置顶]</span>
                                         </c:if>

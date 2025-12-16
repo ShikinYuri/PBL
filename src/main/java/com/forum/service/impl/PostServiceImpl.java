@@ -17,6 +17,8 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private PostMapper postMapper;
+    @Autowired
+    private com.forum.service.SectionService sectionService;
 
     @Override
     public boolean createPost(Post post) {
@@ -25,7 +27,12 @@ public class PostServiceImpl implements PostService {
         post.setReplyCount(0);
         post.setIsTop(0);
         post.setIsEssence(0);
-        return postMapper.insert(post) > 0;
+        boolean ok = postMapper.insert(post) > 0;
+        if (ok && post.getSectionId() != null) {
+            // 更新版块的帖子数
+            sectionService.updatePostCount(post.getSectionId());
+        }
+        return ok;
     }
 
     @Override
@@ -40,7 +47,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean deletePost(Long id) {
-        return postMapper.deleteById(id) > 0;
+        // 获取帖子以便更新所属版块统计
+        com.forum.entity.Post post = getPostById(id);
+        boolean ok = postMapper.deleteById(id) > 0;
+        if (ok && post != null && post.getSectionId() != null) {
+            sectionService.updatePostCount(post.getSectionId());
+        }
+        return ok;
     }
 
     @Override
