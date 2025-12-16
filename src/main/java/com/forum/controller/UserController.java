@@ -100,6 +100,8 @@ public class UserController {
             return "redirect:/user/login";
         }
         user = userService.findById(user.getId());
+        // 同步 session 中的 user 为最新数据，避免视图中 sessionScope 与 model 中不一致
+        session.setAttribute("user", user);
         model.addAttribute("user", user);
         return "user/profile";
     }

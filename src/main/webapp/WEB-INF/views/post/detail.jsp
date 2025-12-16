@@ -50,7 +50,7 @@
                 <div class="form-group">
                     <textarea class="form-control" name="content" rows="4" placeholder="请输入回复内容..." required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">发表回复</button>
+                <button type="button" id="replySubmit" class="btn btn-primary">发表回复</button>
             </form>
         </div>
     </c:if>
@@ -83,12 +83,10 @@
         });
     }
 
-    // 提交回复
-    document.getElementById('replyForm').onsubmit = function(e) {
-        e.preventDefault();
-
+    // 提交回复（按钮型，避免表单默认提交）
+    document.getElementById('replySubmit').onclick = function(e) {
         var content = document.querySelector('textarea[name="content"]').value;
-        if (!content.trim()) {
+        if (!content || !content.trim()) {
             showMessage('回复内容不能为空', 'error');
             return;
         }
@@ -100,11 +98,10 @@
             if (response.success) {
                 showMessage(response.message, 'success');
                 document.querySelector('textarea[name="content"]').value = '';
-                loadReplies(currentPage);
-                // 刷新页面查看新回复
+                // 刷新当前回复列表（可改为局部更新）
                 setTimeout(function() {
                     window.location.reload();
-                }, 1000);
+                }, 800);
             } else {
                 showMessage(response.message, 'error');
             }

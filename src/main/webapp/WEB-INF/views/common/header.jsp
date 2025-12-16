@@ -166,7 +166,7 @@
                         <a href="${pageContext.request.contextPath}/post/create">发帖</a>
                         <a href="${pageContext.request.contextPath}/post/my">我的帖子</a>
                         <a href="${pageContext.request.contextPath}/reply/my">我的回复</a>
-                        <c:if test="${sessionScope.user.role eq 1}">
+                        <c:if test="${not empty sessionScope.user and sessionScope.user.role != null and sessionScope.user.role == 1}">
                             <a href="${pageContext.request.contextPath}/user/manage" style="color: #dc3545;">用户管理</a>
                         </c:if>
                     </c:if>
@@ -179,7 +179,7 @@
                         </c:when>
                         <c:otherwise>
                             <span>欢迎, ${sessionScope.user.nickname ne null ? sessionScope.user.nickname : sessionScope.user.username}</span>
-                            <c:if test="${sessionScope.user.role eq 1}">
+                            <c:if test="${not empty sessionScope.user and sessionScope.user.role != null and sessionScope.user.role == 1}">
                                 <span style="color: #dc3545; font-weight: bold;">[管理员]</span>
                             </c:if>
                             <a href="${pageContext.request.contextPath}/user/profile" class="btn btn-secondary">个人中心</a>

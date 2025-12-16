@@ -51,7 +51,9 @@ public class IndexController {
         List<Post> posts = postService.getPostsBySectionId(id, page, size);
         int totalCount = postService.getPostCountBySectionId(id);
 
+        String pageTitle = section != null ? section.getName() : "版块";
         model.addAttribute("section", section);
+        model.addAttribute("pageTitle", pageTitle);
         model.addAttribute("sections", sectionService.getAllSections());
         model.addAttribute("posts", posts);
         model.addAttribute("currentPage", page);

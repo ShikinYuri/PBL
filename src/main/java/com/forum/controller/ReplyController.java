@@ -90,6 +90,7 @@ public class ReplyController {
         int totalCount = replyService.getReplyCountByPostId(postId);
 
         model.addAttribute("post", post);
+        model.addAttribute("pageTitle", "回复列表");
         model.addAttribute("replies", replies);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / size));
