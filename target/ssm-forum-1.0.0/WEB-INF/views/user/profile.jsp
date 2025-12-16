@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     request.setAttribute("pageTitle", "个人中心");
 %>
@@ -16,7 +17,7 @@
                     <span style="font-size: 48px; color: #999;">👤</span>
                 </div>
                 <h3>${user.nickname ne null ? user.nickname : user.username}</h3>
-                <c:if test="${user.role eq 1}">
+                <c:if test="${not empty sessionScope.user and (sessionScope.user.role == 1 or sessionScope.user.role == '1')}">
                     <p style="color: #dc3545; font-weight: bold;">管理员</p>
                 </c:if>
                 <p style="color: #666; margin-top: 10px;">
@@ -55,12 +56,12 @@
         <div>
             <h4 style="margin-bottom: 15px;">快捷链接</h4>
             <div style="display: flex; gap: 15px;">
-                <a href="/post/my" class="btn btn-secondary">我的帖子</a>
-                <a href="/reply/my" class="btn btn-secondary">我的回复</a>
-                <c:if test="${user.role eq 1}">
-                    <a href="/user/manage" class="btn btn-danger">用户管理</a>
+                <a href="${pageContext.request.contextPath}/post/my" class="btn btn-secondary">我的帖子</a>
+                <a href="${pageContext.request.contextPath}/reply/my" class="btn btn-secondary">我的回复</a>
+                <c:if test="${not empty sessionScope.user and (sessionScope.user.role == 1 or sessionScope.user.role == '1')}">
+                    <a href="${pageContext.request.contextPath}/user/manage" class="btn btn-danger">用户管理</a>
                 </c:if>
-                <a href="/user/logout" class="btn btn-danger" style="margin-left: auto;">退出登录</a>
+                <a href="${pageContext.request.contextPath}/user/logout" class="btn btn-danger" style="margin-left: auto;">退出登录</a>
             </div>
         </div>
     </div>
@@ -80,7 +81,8 @@
             return;
         }
 
-        ajaxRequest('/user/updateProfile', 'POST', {
+        var _ctx = '${pageContext.request.contextPath}';
+        ajaxRequest(_ctx + '/user/updateProfile', 'POST', {
             email: email,
             nickname: nickname
         }, function(response) {

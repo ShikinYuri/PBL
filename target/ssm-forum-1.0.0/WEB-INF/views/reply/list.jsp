@@ -1,18 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%
-    request.setAttribute("pageTitle", "回复列表");
-%>
 <jsp:include page="../common/header.jsp"/>
 
 <div class="container" style="max-width: 1000px;">
     <!-- 帖子信息 -->
-    <div style="background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
+            <div style="background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
         <h3 style="margin-bottom: 10px;">
-            <a href="/post/detail/${post.id}" style="color: #333; text-decoration: none;">
-                ${post.title}
-            </a>
+            <span style="color: #333; text-decoration: none;">${post.title}</span>
         </h3>
         <div style="color: #666; font-size: 14px;">
             作者: ${post.nickname ne null ? post.nickname : post.username} |
@@ -21,6 +16,20 @@
     </div>
 
     <!-- 回复列表 -->
+    <c:if test="${not empty sessionScope.user}">
+        <div style="background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
+            <h3 style="margin-bottom: 15px;">发表评论</h3>
+            <form id="replyForm">
+                <input type="hidden" name="postId" value="${post.id}">
+                <div class="form-group">
+                    <textarea class="form-control" name="content" rows="4" placeholder="请输入回复内容..." required></textarea>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <button type="button" id="replySubmit" class="btn btn-primary">发表回复</button>
+                </div>
+            </form>
+        </div>
+    </c:if>
     <div style="background-color: #fff; padding: 20px; border-radius: 5px;">
         <h3 style="margin-bottom: 20px;">全部回复</h3>
 
@@ -62,7 +71,7 @@
                 <!-- 分页 -->
                 <div class="pagination">
                     <c:if test="${currentPage > 1}">
-                        <a href="/reply/list/${post.id}?page=${currentPage - 1}">上一页</a>
+                        <a href="${pageContext.request.contextPath}/reply/list/${post.id}?page=${currentPage - 1}">上一页</a>
                     </c:if>
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <c:choose>
@@ -70,12 +79,12 @@
                                 <a href="#" class="active">${i}</a>
                             </c:when>
                             <c:otherwise>
-                                <a href="/reply/list/${post.id}?page=${i}">${i}</a>
+                                <a href="${pageContext.request.contextPath}/reply/list/${post.id}?page=${i}">${i}</a>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
                     <c:if test="${currentPage < totalPages}">
-                        <a href="/reply/list/${post.id}?page=${currentPage + 1}">下一页</a>
+                        <a href="${pageContext.request.contextPath}/reply/list/${post.id}?page=${currentPage + 1}">下一页</a>
                     </c:if>
                 </div>
             </c:otherwise>
@@ -84,3 +93,35 @@
 </div>
 
 <jsp:include page="../common/footer.jsp"/>
+
+<script>
+    var _ctx = '${pageContext.request.contextPath}';
+    var postId = ${post.id};
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('replySubmit');
+        if (!btn) return;
+        btn.onclick = function() {
+            var contentEl = document.querySelector('textarea[name="content"]');
+            var content = contentEl ? contentEl.value : '';
+            if (!content || !content.trim()) {
+                showMessage('回复内容不能为空', 'error');
+                return;
+            }
+
+            ajaxRequest(_ctx + '/reply/create', 'POST', {
+                postId: postId,
+                content: content
+            }, function(response) {
+                if (response.success) {
+                    showMessage(response.message, 'success');
+                    setTimeout(function() {
+                        // 刷新到回复页第一页以查看新回复
+                        window.location.href = _ctx + '/reply/list/' + postId + '?page=1';
+                    }, 800);
+                } else {
+                    showMessage(response.message, 'error');
+                }
+            });
+        };
+    });
+</script>

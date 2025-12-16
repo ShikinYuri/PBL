@@ -39,8 +39,8 @@
             </div>
         </form>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <p>已有账号？ <a href="/user/login">立即登录</a></p>
+            <div style="text-align: center; margin-top: 20px;">
+            <p>已有账号？ <a href="${pageContext.request.contextPath}/user/login">立即登录</a></p>
         </div>
     </div>
 </div>
@@ -72,7 +72,8 @@
             return;
         }
 
-        ajaxRequest('/user/register', 'POST', {
+        var _ctx = '${pageContext.request.contextPath}';
+        ajaxRequest(_ctx + '/user/register', 'POST', {
             username: username,
             password: password,
             email: email,
@@ -81,7 +82,7 @@
             if (response.success) {
                 showMessage(response.message, 'success');
                 setTimeout(function() {
-                    window.location.href = '/user/login';
+                    window.location.href = _ctx + '/user/login';
                 }, 1500);
             } else {
                 showMessage(response.message, 'error');

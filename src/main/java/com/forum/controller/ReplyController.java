@@ -61,10 +61,8 @@ public class ReplyController {
         reply.setReplyUserId(replyUserId);
 
         if (replyService.createReply(reply)) {
-            // 更新帖子的回复信息
-            if (postService instanceof com.forum.service.impl.PostServiceImpl) {
-                ((com.forum.service.impl.PostServiceImpl) postService).updateReplyInfo(postId, user.getId());
-            }
+            // 更新帖子的回复信息（通过接口调用，避免 instanceof 问题）
+            postService.updateReplyInfo(postId, user.getId());
 
             result.put("success", true);
             result.put("message", "回复成功");
@@ -90,6 +88,7 @@ public class ReplyController {
         int totalCount = replyService.getReplyCountByPostId(postId);
 
         model.addAttribute("post", post);
+        model.addAttribute("pageTitle", "回复列表");
         model.addAttribute("replies", replies);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", (int) Math.ceil((double) totalCount / size));

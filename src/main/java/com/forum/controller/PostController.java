@@ -57,13 +57,14 @@ public class PostController {
 
     @GetMapping("/detail/{id}")
     public String postDetail(@PathVariable Long id, Model model) {
+        // Detail view removed; redirect to reply list page for the post
         Post post = postService.getPostById(id);
         if (post == null) {
             return "redirect:/post/list";
         }
+        // increase view count then redirect to reply list
         postService.increaseViewCount(id);
-        model.addAttribute("post", post);
-        return "post/detail";
+        return "redirect:/reply/list/" + id;
     }
 
     @GetMapping("/create")
