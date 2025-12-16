@@ -129,6 +129,7 @@
             });
         };
     });
+<<<<<<< HEAD
 </script>
 <script>
     function deleteReply(id) {
@@ -142,4 +143,6 @@
             }
         });
     }
+=======
+>>>>>>> main
 </script>
