@@ -62,6 +62,11 @@
                                         </span>
                                     </div>
                                     <div style="line-height: 1.8; color: #333; white-space: pre-wrap;">${reply.content}</div>
+                                    <div style="margin-top:8px; text-align: right;">
+                                        <c:if test="${not empty sessionScope.user and (sessionScope.user.id eq reply.userId or (sessionScope.user.role == 1 or sessionScope.user.role == '1'))}">
+                                            <button type="button" onclick="deleteReply(${reply.id})" class="btn btn-danger" style="padding:4px 8px;">删除</button>
+                                        </c:if>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -124,4 +129,20 @@
             });
         };
     });
+<<<<<<< HEAD
+</script>
+<script>
+    function deleteReply(id) {
+        if (!confirm('确定要删除这条回复吗？')) return;
+        ajaxRequest(_ctx + '/reply/delete', 'POST', { id: id }, function(response) {
+            if (response.success) {
+                showMessage(response.message, 'success');
+                setTimeout(function(){ window.location.reload(); }, 800);
+            } else {
+                showMessage(response.message, 'error');
+            }
+        });
+    }
+=======
+>>>>>>> main
 </script>

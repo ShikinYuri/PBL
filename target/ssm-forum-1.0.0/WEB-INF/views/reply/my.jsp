@@ -32,6 +32,9 @@
                             <div style="line-height: 1.8; color: #333; white-space: pre-wrap; padding: 10px; background-color: #f5f5f5; border-radius: 5px;">
                                 ${reply.content}
                             </div>
+                            <div style="margin-top:8px; text-align: right;">
+                                <button type="button" onclick="deleteReply(${reply.id})" class="btn btn-danger" style="padding:4px 8px;">删除</button>
+                            </div>
                         </div>
                     </c:forEach>
                 </div>
@@ -61,3 +64,17 @@
 </div>
 
 <jsp:include page="../common/footer.jsp"/>
+<script>
+    var _ctx = '${pageContext.request.contextPath}';
+    function deleteReply(id) {
+        if (!confirm('确定要删除这条回复吗？')) return;
+        ajaxRequest(_ctx + '/reply/delete', 'POST', { id: id }, function(response) {
+            if (response.success) {
+                showMessage(response.message, 'success');
+                setTimeout(function(){ window.location.reload(); }, 800);
+            } else {
+                showMessage(response.message, 'error');
+            }
+        });
+    }
+</script>
