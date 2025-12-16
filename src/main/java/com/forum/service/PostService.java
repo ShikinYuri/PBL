@@ -32,4 +32,7 @@ public interface PostService {
     int getSearchPostCount(String keyword);
 
     boolean increaseViewCount(Long postId);
+
+    // 更新帖子回复信息（回复数、最后回复时间、最后回复人）
+    void updateReplyInfo(Long postId, Long replyUserId);
 }

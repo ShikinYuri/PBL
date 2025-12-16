@@ -42,7 +42,7 @@
                         <div style="border-bottom: 1px solid #eee; padding: 15px 0;">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div style="flex: 1;">
-                                    <a href="${pageContext.request.contextPath}/post/detail/${post.id}" style="color: #333; text-decoration: none; font-size: 16px;">
+                                    <a href="${pageContext.request.contextPath}/reply/list/${post.id}" style="color: #333; text-decoration: none; font-size: 16px;">
                                         <c:if test="${post.isTop eq 1}">
                                             <span style="color: #dc3545; font-weight: bold;">[置顶]</span>
                                         </c:if>
@@ -51,12 +51,18 @@
                                         </c:if>
                                         ${post.title}
                                     </a>
-                                    <div style="margin-top: 8px; color: #666; font-size: 14px;">
-                                        作者: ${post.nickname ne null ? post.nickname : post.username} |
-                                        版块: ${post.sectionName} |
-                                        回复: ${post.replyCount} |
-                                        浏览: ${post.viewCount} |
-                                        时间: <fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm"/>
+                                    <div style="margin-top: 8px; color: #666; font-size: 14px; display:flex; gap:10px; align-items:center;">
+                                        <div>作者: ${post.nickname ne null ? post.nickname : post.username}</div>
+                                        <div>版块: ${post.sectionName}</div>
+                                        <div>回复: <span id="reply-count-${post.id}">${post.replyCount}</span></div>
+                                        <div>浏览: ${post.viewCount}</div>
+                                        <div>时间: <fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm"/></div>
+                                        <div style="margin-left: auto; display:flex; gap:8px;">
+                                            <c:if test="${not empty sessionScope.user and (sessionScope.user.id eq post.userId or (sessionScope.user.role == 1 or sessionScope.user.role == '1'))}">
+                                                <a href="${pageContext.request.contextPath}/post/edit/${post.id}" class="btn btn-secondary" style="padding:4px 8px;">编辑</a>
+                                                <button type="button" onclick="deletePost(${post.id}, ${post.sectionId})" class="btn btn-danger" style="padding:4px 8px;">删除</button>
+                                            </c:if>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -89,3 +95,19 @@
 </div>
 
 <jsp:include page="../common/footer.jsp"/>
+
+<script>
+    var _ctx = '${pageContext.request.contextPath}';
+    function deletePost(id, sectionId) {
+        if (!confirm('确定要删除这个帖子吗？')) return;
+        ajaxRequest(_ctx + '/post/delete', 'POST', { id: id }, function(response) {
+            if (response.success) {
+                showMessage(response.message, 'success');
+                // 刷新页面并更新版块计数（简单处理：reload）
+                setTimeout(function(){ window.location.reload(); }, 800);
+            } else {
+                showMessage(response.message, 'error');
+            }
+        });
+    }
+</script>

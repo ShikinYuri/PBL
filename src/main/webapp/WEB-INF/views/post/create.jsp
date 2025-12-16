@@ -72,7 +72,7 @@
             if (response.success) {
                 showMessage(response.message, 'success');
                 setTimeout(function() {
-                    window.location.href = _ctx + '/post/detail/' + response.postId;
+                    window.location.href = _ctx + '/reply/list/' + response.postId;
                 }, 1500);
             } else {
                 showMessage(response.message, 'error');

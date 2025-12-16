@@ -30,7 +30,7 @@
                     <div style="border-bottom: 1px solid #eee; padding: 15px 0;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
-                                <a href="${pageContext.request.contextPath}/post/detail/${post.id}" style="color: #333; text-decoration: none; font-size: 16px;">
+                                    <a href="${pageContext.request.contextPath}/reply/list/${post.id}" style="color: #333; text-decoration: none; font-size: 16px;">
                                     <c:if test="${post.isTop eq 1}">
                                         <span style="color: #dc3545; font-weight: bold;">[置顶]</span>
                                     </c:if>
@@ -62,7 +62,7 @@
                 <div style="border-bottom: 1px solid #eee; padding: 15px 0;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <a href="${pageContext.request.contextPath}/post/detail/${post.id}" style="color: #333; text-decoration: none; font-size: 16px;">
+                            <a href="${pageContext.request.contextPath}/reply/list/${post.id}" style="color: #333; text-decoration: none; font-size: 16px;">
                                 ${post.title}
                             </a>
                             <div style="margin-top: 5px; color: #666; font-size: 14px;">

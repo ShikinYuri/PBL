@@ -7,9 +7,7 @@
     <!-- 帖子信息 -->
             <div style="background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
         <h3 style="margin-bottom: 10px;">
-            <a href="${pageContext.request.contextPath}/post/detail/${post.id}" style="color: #333; text-decoration: none;">
-                ${post.title}
-            </a>
+            <span style="color: #333; text-decoration: none;">${post.title}</span>
         </h3>
         <div style="color: #666; font-size: 14px;">
             作者: ${post.nickname ne null ? post.nickname : post.username} |
