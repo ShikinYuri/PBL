@@ -24,8 +24,8 @@
             </div>
         </form>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <p>还没有账号？ <a href="/user/register">立即注册</a></p>
+            <div style="text-align: center; margin-top: 20px;">
+            <p>还没有账号？ <a href="${pageContext.request.contextPath}/user/register">立即注册</a></p>
         </div>
     </div>
 </div>
@@ -44,14 +44,15 @@
             return;
         }
 
-        ajaxRequest('/user/login', 'POST', {
+        var _ctx = '${pageContext.request.contextPath}';
+        ajaxRequest(_ctx + '/user/login', 'POST', {
             username: username,
             password: password
         }, function(response) {
             if (response.success) {
                 showMessage(response.message, 'success');
                 setTimeout(function() {
-                    window.location.href = '/';
+                    window.location.href = _ctx + '/';
                 }, 1000);
             } else {
                 showMessage(response.message, 'error');

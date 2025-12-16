@@ -22,7 +22,7 @@
                     <c:forEach items="${replies}" var="reply">
                         <div style="border-bottom: 1px solid #eee; padding: 15px 0;">
                             <div style="margin-bottom: 10px;">
-                                <a href="/post/detail/${reply.postId}" style="color: #333; text-decoration: none; font-weight: bold;">
+                                <a href="${pageContext.request.contextPath}/post/detail/${reply.postId}" style="color: #333; text-decoration: none; font-weight: bold;">
                                     查看原帖
                                 </a>
                                 <span style="color: #999; margin-left: 10px;">
@@ -39,7 +39,7 @@
                 <!-- 分页 -->
                 <div class="pagination">
                     <c:if test="${currentPage > 1}">
-                        <a href="/reply/my?page=${currentPage - 1}">上一页</a>
+                        <a href="${pageContext.request.contextPath}/reply/my?page=${currentPage - 1}">上一页</a>
                     </c:if>
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <c:choose>
@@ -47,12 +47,12 @@
                                 <a href="#" class="active">${i}</a>
                             </c:when>
                             <c:otherwise>
-                                <a href="/reply/my?page=${i}">${i}</a>
+                                <a href="${pageContext.request.contextPath}/reply/my?page=${i}">${i}</a>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
                     <c:if test="${currentPage < totalPages}">
-                        <a href="/reply/my?page=${currentPage + 1}">下一页</a>
+                        <a href="${pageContext.request.contextPath}/reply/my?page=${currentPage + 1}">下一页</a>
                     </c:if>
                 </div>
             </c:otherwise>
