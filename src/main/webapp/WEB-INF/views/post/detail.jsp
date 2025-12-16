@@ -35,7 +35,7 @@
 
         <c:if test="${not empty sessionScope.user and (sessionScope.user.id eq post.userId or sessionScope.user.role eq 1)}">
             <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
-                <a href="/post/edit/${post.id}" class="btn btn-secondary">编辑</a>
+                <a href="${pageContext.request.contextPath}/post/edit/${post.id}" class="btn btn-secondary">编辑</a>
                 <button onclick="deletePost(${post.id})" class="btn btn-danger">删除</button>
             </div>
         </c:if>
@@ -73,12 +73,13 @@
     var postId = ${post.id};
     var currentPage = 1;
 
+    var _ctx = '${pageContext.request.contextPath}';
     // 加载回复列表
     function loadReplies(page) {
         currentPage = page || 1;
-        ajaxRequest('/reply/list/' + postId + '?page=' + currentPage, 'GET', {}, function(response) {
+        ajaxRequest(_ctx + '/reply/list/' + postId + '?page=' + currentPage, 'GET', {}, function(response) {
             // 这里假设返回HTML，实际应该返回JSON
-            window.location.href = '/reply/list/${post.id}?page=' + currentPage;
+            window.location.href = _ctx + '/reply/list/${post.id}?page=' + currentPage;
         });
     }
 
@@ -92,7 +93,7 @@
             return;
         }
 
-        ajaxRequest('/reply/create', 'POST', {
+        ajaxRequest(_ctx + '/reply/create', 'POST', {
             postId: postId,
             content: content
         }, function(response) {
@@ -113,13 +114,13 @@
     // 删除帖子
     function deletePost(id) {
         if (confirm('确定要删除这个帖子吗？')) {
-            ajaxRequest('/post/delete', 'POST', {
+            ajaxRequest(_ctx + '/post/delete', 'POST', {
                 id: id
             }, function(response) {
                 if (response.success) {
                     showMessage(response.message, 'success');
                     setTimeout(function() {
-                        window.location.href = '/post/list';
+                        window.location.href = _ctx + '/post/list';
                     }, 1000);
                 } else {
                     showMessage(response.message, 'error');

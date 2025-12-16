@@ -73,7 +73,7 @@
         <!-- 分页 -->
         <div class="pagination" style="margin-top: 30px;">
             <c:if test="${currentPage > 1}">
-                <a href="/user/manage?page=${currentPage - 1}">上一页</a>
+                <a href="${pageContext.request.contextPath}/user/manage?page=${currentPage - 1}">上一页</a>
             </c:if>
             <c:forEach begin="1" end="${totalPages}" var="i">
                 <c:choose>
@@ -81,12 +81,12 @@
                         <a href="#" class="active">${i}</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="/user/manage?page=${i}">${i}</a>
+                        <a href="${pageContext.request.contextPath}/user/manage?page=${i}">${i}</a>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
             <c:if test="${currentPage < totalPages}">
-                <a href="/user/manage?page=${currentPage + 1}">下一页</a>
+                <a href="${pageContext.request.contextPath}/user/manage?page=${currentPage + 1}">下一页</a>
             </c:if>
         </div>
     </div>
@@ -98,7 +98,8 @@
     function updateUserStatus(userId, status) {
         var action = status == 1 ? '启用' : '禁用';
         if (confirm('确定要' + action + '这个用户吗？')) {
-            ajaxRequest('/user/updateStatus', 'POST', {
+            var _ctx = '${pageContext.request.contextPath}';
+            ajaxRequest(_ctx + '/user/updateStatus', 'POST', {
                 id: userId,
                 status: status
             }, function(response) {

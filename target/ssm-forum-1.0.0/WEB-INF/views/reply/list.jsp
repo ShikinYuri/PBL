@@ -8,9 +8,9 @@
 
 <div class="container" style="max-width: 1000px;">
     <!-- 帖子信息 -->
-    <div style="background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
+            <div style="background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
         <h3 style="margin-bottom: 10px;">
-            <a href="/post/detail/${post.id}" style="color: #333; text-decoration: none;">
+            <a href="${pageContext.request.contextPath}/post/detail/${post.id}" style="color: #333; text-decoration: none;">
                 ${post.title}
             </a>
         </h3>
@@ -62,7 +62,7 @@
                 <!-- 分页 -->
                 <div class="pagination">
                     <c:if test="${currentPage > 1}">
-                        <a href="/reply/list/${post.id}?page=${currentPage - 1}">上一页</a>
+                        <a href="${pageContext.request.contextPath}/reply/list/${post.id}?page=${currentPage - 1}">上一页</a>
                     </c:if>
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <c:choose>
@@ -70,12 +70,12 @@
                                 <a href="#" class="active">${i}</a>
                             </c:when>
                             <c:otherwise>
-                                <a href="/reply/list/${post.id}?page=${i}">${i}</a>
+                                <a href="${pageContext.request.contextPath}/reply/list/${post.id}?page=${i}">${i}</a>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
                     <c:if test="${currentPage < totalPages}">
-                        <a href="/reply/list/${post.id}?page=${currentPage + 1}">下一页</a>
+                        <a href="${pageContext.request.contextPath}/reply/list/${post.id}?page=${currentPage + 1}">下一页</a>
                     </c:if>
                 </div>
             </c:otherwise>

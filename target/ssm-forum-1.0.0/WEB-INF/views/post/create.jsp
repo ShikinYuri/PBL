@@ -32,7 +32,7 @@
 
             <div style="text-align: center; margin-top: 30px;">
                 <button type="submit" class="btn btn-primary" style="padding: 10px 40px;">发表帖子</button>
-                <a href="/post/list" class="btn btn-secondary" style="padding: 10px 40px; margin-left: 20px;">返回</a>
+                <a href="${pageContext.request.contextPath}/post/list" class="btn btn-secondary" style="padding: 10px 40px; margin-left: 20px;">返回</a>
             </div>
         </form>
     </div>
@@ -63,7 +63,8 @@
             return;
         }
 
-        ajaxRequest('/post/create', 'POST', {
+        var _ctx = '${pageContext.request.contextPath}';
+        ajaxRequest(_ctx + '/post/create', 'POST', {
             title: title,
             sectionId: sectionId,
             content: content
@@ -71,7 +72,7 @@
             if (response.success) {
                 showMessage(response.message, 'success');
                 setTimeout(function() {
-                    window.location.href = '/post/detail/' + response.postId;
+                    window.location.href = _ctx + '/post/detail/' + response.postId;
                 }, 1500);
             } else {
                 showMessage(response.message, 'error');

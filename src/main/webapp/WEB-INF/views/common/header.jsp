@@ -158,32 +158,32 @@
     <div class="header">
         <div class="container">
             <div class="header-content">
-                <a href="/" class="logo">SSM论坛</a>
+                <a href="${pageContext.request.contextPath}/" class="logo">SSM论坛</a>
                 <nav class="nav">
-                    <a href="/" class="${pageTitle eq '首页' ? 'active' : ''}">首页</a>
-                    <a href="/post/list" class="${pageTitle eq '所有帖子' ? 'active' : ''}">所有帖子</a>
+                    <a href="${pageContext.request.contextPath}/" class="${pageTitle eq '首页' ? 'active' : ''}">首页</a>
+                    <a href="${pageContext.request.contextPath}/post/list" class="${pageTitle eq '所有帖子' ? 'active' : ''}">所有帖子</a>
                     <c:if test="${not empty sessionScope.user}">
-                        <a href="/post/create">发帖</a>
-                        <a href="/post/my">我的帖子</a>
-                        <a href="/reply/my">我的回复</a>
+                        <a href="${pageContext.request.contextPath}/post/create">发帖</a>
+                        <a href="${pageContext.request.contextPath}/post/my">我的帖子</a>
+                        <a href="${pageContext.request.contextPath}/reply/my">我的回复</a>
                         <c:if test="${sessionScope.user.role eq 1}">
-                            <a href="/user/manage" style="color: #dc3545;">用户管理</a>
+                            <a href="${pageContext.request.contextPath}/user/manage" style="color: #dc3545;">用户管理</a>
                         </c:if>
                     </c:if>
                 </nav>
                 <div class="user-info">
                     <c:choose>
                         <c:when test="${empty sessionScope.user}">
-                            <a href="/user/login" class="btn btn-primary">登录</a>
-                            <a href="/user/register" class="btn btn-secondary">注册</a>
+                            <a href="${pageContext.request.contextPath}/user/login" class="btn btn-primary">登录</a>
+                            <a href="${pageContext.request.contextPath}/user/register" class="btn btn-secondary">注册</a>
                         </c:when>
                         <c:otherwise>
                             <span>欢迎, ${sessionScope.user.nickname ne null ? sessionScope.user.nickname : sessionScope.user.username}</span>
                             <c:if test="${sessionScope.user.role eq 1}">
                                 <span style="color: #dc3545; font-weight: bold;">[管理员]</span>
                             </c:if>
-                            <a href="/user/profile" class="btn btn-secondary">个人中心</a>
-                            <a href="/user/logout" class="btn btn-danger">退出</a>
+                            <a href="${pageContext.request.contextPath}/user/profile" class="btn btn-secondary">个人中心</a>
+                            <a href="${pageContext.request.contextPath}/user/logout" class="btn btn-danger">退出</a>
                         </c:otherwise>
                     </c:choose>
                 </div>
