@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forum.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.forum.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="nickname" property="nickname"/>
+        <result column="avatar" property="avatar"/>
+        <result column="role" property="role"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        u.id, u.username, u.password, u.email, u.nickname, u.avatar,
+        CASE WHEN r.user_id IS NOT NULL AND r.active = 1 THEN 1 ELSE u.role END AS role,
+        u.status, u.create_time, u.update_time
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from `user` u
+        left join `root` r on u.id = r.user_id
+        where u.id = #{id}
+    </select>
+
+    <select id="findByUsername" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from `user` u
+        left join `root` r on u.id = r.user_id
+        where u.username = #{username}
+    </select>
+
+    <select id="findByEmail" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from `user` u
+        left join `root` r on u.id = r.user_id
+        where u.email = #{email}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from `user` u
+        left join `root` r on u.id = r.user_id
+        order by u.create_time desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="countAll" resultType="int">
+        select count(*) from user
+    </select>
+
+    <select id="countByRole" resultType="int">
+        select count(*) from user where role = #{role}
+    </select>
+
+    <insert id="insert" parameterType="com.forum.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (username, password, email, nickname, avatar, role, status)
+        values (#{username}, #{password}, #{email}, #{nickname}, #{avatar}, #{role}, #{status})
+    </insert>
+
+    <update id="update" parameterType="com.forum.entity.User">
+        update user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        update user set status = #{status} where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from user where id = #{id}
+    </delete>
+
+</mapper>
