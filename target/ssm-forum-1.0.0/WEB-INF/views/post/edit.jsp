@@ -9,7 +9,11 @@
     <div style="background-color: #fff; padding: 30px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
         <h2 style="margin-bottom: 30px;">编辑帖子</h2>
 
+<<<<<<< HEAD
         <form id="postEditForm">
+=======
+        <form id="editForm">
+>>>>>>> ShikinYuri
             <input type="hidden" id="postId" name="id" value="${post.id}" />
 
             <div class="form-group">
@@ -18,6 +22,7 @@
             </div>
 
             <div class="form-group">
+<<<<<<< HEAD
                 <label for="sectionId">版块</label>
                 <select class="form-control" id="sectionId" name="sectionId" disabled>
                     <c:forEach items="${sections}" var="section">
@@ -25,6 +30,14 @@
                     </c:forEach>
                 </select>
                 <small style="color:#666;">版块不可在编辑时修改</small>
+=======
+                <label for="section">版块</label>
+                <select class="form-control" id="section" disabled>
+                    <c:forEach items="${sections}" var="section">
+                        <option value="${section.id}" <c:if test="${section.id == post.sectionId}">selected</c:if>>${section.name}</option>
+                    </c:forEach>
+                </select>
+>>>>>>> ShikinYuri
             </div>
 
             <div class="form-group">
@@ -33,7 +46,11 @@
             </div>
 
             <div style="text-align: center; margin-top: 30px;">
+<<<<<<< HEAD
                 <button type="submit" class="btn btn-primary" style="padding: 10px 40px;">保存更改</button>
+=======
+                <button type="submit" class="btn btn-primary" style="padding: 10px 40px;">保存修改</button>
+>>>>>>> ShikinYuri
                 <a href="${pageContext.request.contextPath}/post/list" class="btn btn-secondary" style="padding: 10px 40px; margin-left: 20px;">返回</a>
             </div>
         </form>
@@ -43,7 +60,11 @@
 <jsp:include page="../common/footer.jsp"/>
 
 <script>
+<<<<<<< HEAD
     document.getElementById('postEditForm').onsubmit = function(e) {
+=======
+    document.getElementById('editForm').onsubmit = function(e) {
+>>>>>>> ShikinYuri
         e.preventDefault();
 
         var id = document.getElementById('postId').value;

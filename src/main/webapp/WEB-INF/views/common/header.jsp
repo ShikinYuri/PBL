@@ -168,6 +168,10 @@
                         <a href="${pageContext.request.contextPath}/reply/my">我的回复</a>
                         <c:if test="${not empty sessionScope.user and (sessionScope.user.role == 1 or sessionScope.user.role == '1')}">
                             <a href="${pageContext.request.contextPath}/user/manage" style="color: #dc3545;">用户管理</a>
+<<<<<<< HEAD
+=======
+                            <a href="${pageContext.request.contextPath}/user/rootManage" style="color: #dc3545; margin-left:8px;">Root 管理</a>
+>>>>>>> ShikinYuri
                         </c:if>
                     </c:if>
                 </nav>

@@ -35,6 +35,9 @@ public interface PostService {
 
     // 更新帖子回复信息（回复数、最后回复时间、最后回复人）
     void updateReplyInfo(Long postId, Long replyUserId);
+<<<<<<< HEAD
     
         boolean updateReplyCount(Long postId);
+=======
+>>>>>>> ShikinYuri
 }

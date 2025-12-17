@@ -16,31 +16,61 @@
     </resultMap>
 
     <sql id="Base_Column_List">
+<<<<<<< HEAD
         id, username, password, email, nickname, avatar, role, status, create_time, update_time
+=======
+        u.id, u.username, u.password, u.email, u.nickname, u.avatar,
+        CASE WHEN r.user_id IS NOT NULL AND r.active = 1 THEN 1 ELSE u.role END AS role,
+        u.status, u.create_time, u.update_time
+>>>>>>> ShikinYuri
     </sql>
 
     <select id="findById" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
+<<<<<<< HEAD
         from user
         where id = #{id}
+=======
+        from `user` u
+        left join `root` r on u.id = r.user_id
+        where u.id = #{id}
+>>>>>>> ShikinYuri
     </select>
 
     <select id="findByUsername" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
+<<<<<<< HEAD
         from user
         where username = #{username}
+=======
+        from `user` u
+        left join `root` r on u.id = r.user_id
+        where u.username = #{username}
+>>>>>>> ShikinYuri
     </select>
 
     <select id="findByEmail" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
+<<<<<<< HEAD
         from user
         where email = #{email}
+=======
+        from `user` u
+        left join `root` r on u.id = r.user_id
+        where u.email = #{email}
+>>>>>>> ShikinYuri
     </select>
 
     <select id="findAll" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
+<<<<<<< HEAD
         from user
         order by create_time desc
+=======
+        from `user` u
+        left join `root` r on u.id = r.user_id
+        order by u.create_time desc
+>>>>>>> ShikinYuri
         limit #{offset}, #{limit}
     </select>
 

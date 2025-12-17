@@ -6,6 +6,7 @@
 <div class="container" style="max-width: 1000px;">
     <!-- 帖子信息 -->
             <div style="background-color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 5px;">
+<<<<<<< HEAD
                 <h3 style="margin-bottom: 10px;">
                     <span style="color: #333; text-decoration: none;">${post.title}</span>
                 </h3>
@@ -15,6 +16,19 @@
                     回复数: <span id="reply-count-${post.id}">${post.replyCount}</span>
                 </div>
             </div>
+=======
+        <h3 style="margin-bottom: 10px;">
+            <span style="color: #333; text-decoration: none;">${post.title}</span>
+        </h3>
+        <div style="color: #666; font-size: 14px;">
+            作者: ${post.nickname ne null ? post.nickname : post.username} |
+            回复数: ${post.replyCount}
+        </div>
+        <div style="margin-top:12px; line-height:1.8; color:#333; white-space: pre-wrap;">
+            ${post.content}
+        </div>
+    </div>
+>>>>>>> ShikinYuri
 
     <!-- 回复列表 -->
     <c:if test="${not empty sessionScope.user}">
@@ -43,7 +57,11 @@
             <c:otherwise>
                 <div>
                     <c:forEach items="${replies}" var="reply">
+<<<<<<< HEAD
                         <div id="reply-${reply.id}" style="border-bottom: 1px solid #eee; padding: 15px 0;">
+=======
+                        <div style="border-bottom: 1px solid #eee; padding: 15px 0;">
+>>>>>>> ShikinYuri
                             <div style="display: flex; align-items: flex-start; gap: 15px;">
                                 <!-- 头像 -->
                                 <div style="width: 50px; height: 50px; background-color: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -137,6 +155,7 @@
         ajaxRequest(_ctx + '/reply/delete', 'POST', { id: id }, function(response) {
             if (response.success) {
                 showMessage(response.message, 'success');
+<<<<<<< HEAD
                 // 移除回复元素
                 var el = document.getElementById('reply-' + id);
                 if (el) el.parentNode.removeChild(el);
@@ -152,6 +171,9 @@
                     var v2 = parseInt(listCountEl.innerText) || 0;
                     if (v2 > 0) listCountEl.innerText = v2 - 1;
                 }
+=======
+                setTimeout(function(){ window.location.reload(); }, 800);
+>>>>>>> ShikinYuri
             } else {
                 showMessage(response.message, 'error');
             }

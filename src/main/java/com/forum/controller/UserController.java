@@ -17,6 +17,11 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+<<<<<<< HEAD
+=======
+    @Autowired
+    private com.forum.service.RootService rootService;
+>>>>>>> ShikinYuri
 
     @GetMapping("/login")
     public String loginPage() {
@@ -155,6 +160,117 @@ public class UserController {
         return "admin/userManage";
     }
 
+<<<<<<< HEAD
+=======
+    @GetMapping("/rootManage")
+    public String rootManage(Model model, HttpSession session,
+                             @RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "10") int size) {
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null || !currentUser.isSuperUser()) {
+            return "redirect:/";
+        }
+
+        java.util.List<com.forum.entity.Root> roots = rootService.findAll(page, size);
+        // enrich with user info
+        java.util.List<java.util.Map<String, Object>> items = new java.util.ArrayList<>();
+        for (com.forum.entity.Root r : roots) {
+            java.util.Map<String, Object> m = new java.util.HashMap<>();
+            m.put("root", r);
+            com.forum.entity.User u = userService.findById(r.getUserId());
+            m.put("user", u);
+            items.add(m);
+        }
+
+        model.addAttribute("roots", items);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", (int) Math.ceil((double) rootService.getCount() / size));
+        return "admin/rootManage";
+    }
+
+    @PostMapping("/root/add")
+    @ResponseBody
+    public Map<String, Object> addRoot(@RequestParam(required = false) Long userId,
+                                       @RequestParam(required = false) String username,
+                                       HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null || !currentUser.isSuperUser()) {
+            result.put("success", false);
+            result.put("message", "权限不足");
+            return result;
+        }
+
+        if (userId == null) {
+            if (username == null || username.trim().isEmpty()) {
+                result.put("success", false);
+                result.put("message", "请提供 userId 或 username");
+                return result;
+            }
+            com.forum.entity.User u = userService.findByUsername(username.trim());
+            if (u == null) {
+                result.put("success", false);
+                result.put("message", "未找到该用户");
+                return result;
+            }
+            userId = u.getId();
+        }
+
+        if (rootService.addRoot(userId)) {
+            result.put("success", true);
+            result.put("message", "添加成功");
+        } else {
+            result.put("success", false);
+            result.put("message", "添加失败");
+        }
+        return result;
+    }
+
+    @PostMapping("/root/toggle")
+    @ResponseBody
+    public Map<String, Object> toggleRoot(@RequestParam Long userId,
+                                          @RequestParam Integer active,
+                                          HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null || !currentUser.isSuperUser()) {
+            result.put("success", false);
+            result.put("message", "权限不足");
+            return result;
+        }
+
+        if (rootService.setActive(userId, active)) {
+            result.put("success", true);
+            result.put("message", "更新成功");
+        } else {
+            result.put("success", false);
+            result.put("message", "更新失败");
+        }
+        return result;
+    }
+
+    @PostMapping("/root/delete")
+    @ResponseBody
+    public Map<String, Object> deleteRoot(@RequestParam Long userId, HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null || !currentUser.isSuperUser()) {
+            result.put("success", false);
+            result.put("message", "权限不足");
+            return result;
+        }
+
+        if (rootService.removeRoot(userId)) {
+            result.put("success", true);
+            result.put("message", "删除成功");
+        } else {
+            result.put("success", false);
+            result.put("message", "删除失败");
+        }
+        return result;
+    }
+
+>>>>>>> ShikinYuri
     @PostMapping("/updateStatus")
     @ResponseBody
     public Map<String, Object> updateStatus(@RequestParam Long userId,
