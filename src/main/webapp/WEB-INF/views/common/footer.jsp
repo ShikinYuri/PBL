@@ -2,7 +2,7 @@
 <div style="background-color: #333; color: #fff; padding: 20px 0; margin-top: 40px;">
     <div class="container">
         <div style="text-align: center;">
-            <p>&copy; 2024 SSM论坛. All rights reserved.</p>
+            <p>&copy; 2024 SK论坛. All rights reserved.</p>
             <p>基于 Spring + SpringMVC + MyBatis 框架开发</p>
         </div>
     </div>

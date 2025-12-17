@@ -35,6 +35,9 @@
     <!-- 2.静态资源默认servlet配置 -->
     <mvc:default-servlet-handler/>
 
+    <!-- 静态资源映射 -->
+    <mvc:resources mapping="/uploads/**" location="/uploads/"/>
+
     <!-- 3.配置jsp 显示ViewResolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -44,6 +47,13 @@
 
     <!-- 4.扫描web相关的bean -->
     <context:component-scan base-package="com.forum.controller"/>
+
+    <!-- 文件上传配置 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10485760"/> <!-- 10MB -->
+        <property name="maxInMemorySize" value="4096"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
 
     <!-- 5.拦截器配置 -->
     <mvc:interceptors>
@@ -58,6 +68,7 @@
             <mvc:mapping path="/reply/my"/>
             <mvc:mapping path="/user/profile"/>
             <mvc:mapping path="/user/updateProfile"/>
+            <mvc:mapping path="/user/uploadAvatar"/>
             <mvc:mapping path="/user/manage"/>
             <mvc:mapping path="/user/updateStatus"/>
             <mvc:exclude-mapping path="/user/login"/>

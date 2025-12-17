@@ -58,4 +58,10 @@ public class RootServiceImpl implements RootService {
     public boolean removeRoot(Long userId) {
         return rootMapper.deleteByUserId(userId) > 0;
     }
+
+    @Override
+    public boolean isRoot(Long userId) {
+        Root r = rootMapper.findByUserId(userId);
+        return r != null && r.getActive() != null && r.getActive() == 1;
+    }
 }

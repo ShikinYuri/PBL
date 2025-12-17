@@ -115,12 +115,4 @@ public class PostServiceImpl implements PostService {
         String now = sdf.format(new Date());
         postMapper.increaseReplyCount(postId, now, replyUserId);
     }
-<<<<<<< HEAD
-
-    @Override
-    public boolean updateReplyCount(Long postId) {
-        return postMapper.updateReplyCount(postId) > 0;
-    }
-=======
->>>>>>> ShikinYuri
 }

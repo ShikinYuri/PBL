@@ -20,6 +20,7 @@ public class Post {
 
     private String username;
     private String nickname;
+    private String avatar;
     private String sectionName;
 
     public Long getId() {
@@ -148,6 +149,14 @@ public class Post {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getSectionName() {

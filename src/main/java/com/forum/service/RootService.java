@@ -16,4 +16,6 @@ public interface RootService {
     boolean setActive(Long userId, Integer active);
 
     boolean removeRoot(Long userId);
+
+    boolean isRoot(Long userId);
 }

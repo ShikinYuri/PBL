@@ -15,8 +15,10 @@ public class Reply {
 
     private String username;
     private String nickname;
+    private String avatar;
     private String replyUsername;
     private String replyNickname;
+    private String replyAvatar;
 
     public Long getId() {
         return id;
@@ -106,6 +108,14 @@ public class Reply {
         this.nickname = nickname;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public String getReplyUsername() {
         return replyUsername;
     }
@@ -120,5 +130,13 @@ public class Reply {
 
     public void setReplyNickname(String replyNickname) {
         this.replyNickname = replyNickname;
+    }
+
+    public String getReplyAvatar() {
+        return replyAvatar;
+    }
+
+    public void setReplyAvatar(String replyAvatar) {
+        this.replyAvatar = replyAvatar;
     }
 }

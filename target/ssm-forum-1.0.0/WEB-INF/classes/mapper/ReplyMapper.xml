@@ -14,8 +14,10 @@
         <result column="update_time" property="updateTime"/>
         <result column="username" property="username"/>
         <result column="nickname" property="nickname"/>
+        <result column="avatar" property="avatar"/>
         <result column="reply_username" property="replyUsername"/>
         <result column="reply_nickname" property="replyNickname"/>
+        <result column="reply_avatar" property="replyAvatar"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -25,8 +27,8 @@
 
     <sql id="Join_Column_List">
         r.id, r.content, r.post_id, r.user_id, r.floor, r.reply_user_id, r.status,
-        r.create_time, r.update_time, u.username, u.nickname,
-        ru.username as reply_username, ru.nickname as reply_nickname
+        r.create_time, r.update_time, u.username, u.nickname, u.avatar,
+        ru.username as reply_username, ru.nickname as reply_nickname, ru.avatar as reply_avatar
     </sql>
 
     <select id="findById" resultMap="BaseResultMap">

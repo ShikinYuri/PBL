@@ -23,6 +23,8 @@ public interface UserService {
 
     boolean updateUserStatus(Long userId, Integer status);
 
+    boolean updateUserRole(Long userId, Integer role);
+
     boolean isUsernameExists(String username);
 
     boolean isEmailExists(String email);

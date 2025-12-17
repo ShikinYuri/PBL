@@ -52,7 +52,13 @@
                                         ${post.title}
                                     </a>
                                     <div style="margin-top: 8px; color: #666; font-size: 14px; display:flex; gap:10px; align-items:center;">
-                                        <div>作者: ${post.nickname ne null ? post.nickname : post.username}</div>
+                                        <div style="display:flex; align-items:center; gap:5px;">
+                                            <c:if test="${not empty post.avatar}">
+                                                <img src="${pageContext.request.contextPath}${post.avatar}" 
+                                                     style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover;">
+                                            </c:if>
+                                            作者: ${post.nickname ne null ? post.nickname : post.username}
+                                        </div>
                                         <div>版块: ${post.sectionName}</div>
                                         <div>回复: <span id="reply-count-${post.id}">${post.replyCount}</span></div>
                                         <div>浏览: ${post.viewCount}</div>
@@ -61,6 +67,10 @@
                                             <c:if test="${not empty sessionScope.user and (sessionScope.user.id eq post.userId or (sessionScope.user.role == 1 or sessionScope.user.role == '1'))}">
                                                 <a href="${pageContext.request.contextPath}/post/edit/${post.id}" class="btn btn-secondary" style="padding:4px 8px;">编辑</a>
                                                 <button type="button" onclick="deletePost(${post.id}, ${post.sectionId})" class="btn btn-danger" style="padding:4px 8px;">删除</button>
+                                            </c:if>
+                                            <c:if test="${not empty sessionScope.user and (sessionScope.isRoot == true or sessionScope.user.role == 1)}">
+                                                <button type="button" onclick="toggleTop(${post.id}, ${post.isTop == 1 ? 0 : 1})" class="btn btn-warning" style="padding:4px 8px;">${post.isTop == 1 ? '取消置顶' : '置顶'}</button>
+                                                <button type="button" onclick="toggleEssence(${post.id}, ${post.isEssence == 1 ? 0 : 1})" class="btn btn-info" style="padding:4px 8px;">${post.isEssence == 1 ? '取消精华' : '设为精华'}</button>
                                             </c:if>
                                         </div>
                                     </div>
@@ -105,6 +115,29 @@
                 showMessage(response.message, 'success');
                 // 刷新页面并更新版块计数（简单处理：reload）
                 setTimeout(function(){ window.location.reload(); }, 800);
+            } else {
+                showMessage(response.message, 'error');
+            }
+        });
+    }
+</script>
+<script>
+    function toggleTop(id, isTop) {
+        ajaxRequest(_ctx + '/post/setTop', 'POST', { id: id, isTop: isTop }, function(response) {
+            if (response.success) {
+                showMessage(response.message, 'success');
+                setTimeout(function(){ window.location.reload(); }, 600);
+            } else {
+                showMessage(response.message, 'error');
+            }
+        });
+    }
+
+    function toggleEssence(id, isEssence) {
+        ajaxRequest(_ctx + '/post/setEssence', 'POST', { id: id, isEssence: isEssence }, function(response) {
+            if (response.success) {
+                showMessage(response.message, 'success');
+                setTimeout(function(){ window.location.reload(); }, 600);
             } else {
                 showMessage(response.message, 'error');
             }

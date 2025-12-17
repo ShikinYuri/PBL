@@ -85,6 +85,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean updateUserRole(Long userId, Integer role) {
+        com.forum.entity.User user = userMapper.findById(userId);
+        if (user == null) return false;
+        user.setRole(role);
+        return userMapper.update(user) > 0;
+    }
+
+    @Override
     public boolean isUsernameExists(String username) {
         return userMapper.findByUsername(username) != null;
     }

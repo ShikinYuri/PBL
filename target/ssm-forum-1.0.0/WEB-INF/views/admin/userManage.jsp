@@ -54,16 +54,23 @@
                             <fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd"/>
                         </td>
                         <td style="padding: 12px; text-align: center;">
-                            <c:if test="${user.role ne 1}">
-                                <c:choose>
-                                    <c:when test="${user.status eq 1}">
-                                        <button onclick="updateUserStatus(${user.id}, 0)" class="btn btn-danger" style="padding: 5px 15px;">禁用</button>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <button onclick="updateUserStatus(${user.id}, 1)" class="btn btn-primary" style="padding: 5px 15px;">启用</button>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${user.role eq 1}">
+                                    <button onclick="setRole(${user.id}, 0)" class="btn btn-secondary" style="padding: 5px 15px;">取消超级管理员</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button onclick="setRole(${user.id}, 1)" class="btn btn-warning" style="padding: 5px 15px;">设为超级管理员</button>
+                                </c:otherwise>
+                            </c:choose>
+                            <span style="display:inline-block; width:8px;"></span>
+                            <c:choose>
+                                <c:when test="${user.status eq 1}">
+                                    <button onclick="updateUserStatus(${user.id}, 0)" class="btn btn-danger" style="padding: 5px 15px;">禁用</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button onclick="updateUserStatus(${user.id}, 1)" class="btn btn-primary" style="padding: 5px 15px;">启用</button>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                     </tr>
                 </c:forEach>
@@ -113,5 +120,19 @@
                 }
             });
         }
+    }
+
+    function setRole(userId, role) {
+        var action = role == 1 ? '设为超级管理员' : '取消超级管理员';
+        if (!confirm('确定要' + action + '吗？')) return;
+        var _ctx = '${pageContext.request.contextPath}';
+        ajaxRequest(_ctx + '/user/setRole', 'POST', { userId: userId, role: role }, function(response) {
+            if (response.success) {
+                showMessage(response.message, 'success');
+                setTimeout(function() { location.reload(); }, 800);
+            } else {
+                showMessage(response.message, 'error');
+            }
+        });
     }
 </script>

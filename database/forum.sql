@@ -79,9 +79,6 @@ INSERT INTO `section` (`name`, `description`, `sort`) VALUES
 ('技术讨论', '分享技术心得，讨论技术问题', 1),
 ('生活随笔', '记录生活点滴，分享个人感悟', 2),
 ('问答求助', '遇到问题？来这里寻求帮助', 3),
-<<<<<<< HEAD
-('闲聊灌水', '轻松愉快，畅所欲言', 4);
-=======
 ('闲聊灌水', '轻松愉快，畅所欲言', 4);
 
 -- 超级权限控制表：root 表用于额外指定某些用户为 root（超级管理员），
@@ -98,4 +95,3 @@ CREATE TABLE `root` (
 -- 将已插入的 admin 用户同步到 root 表（如果存在且尚未加入）
 INSERT INTO `root` (`user_id`, `active`)
 SELECT id, 1 FROM `user` WHERE username = 'admin' AND NOT EXISTS (SELECT 1 FROM `root` r WHERE r.user_id = (SELECT id FROM `user` WHERE username = 'admin'));
->>>>>>> ShikinYuri

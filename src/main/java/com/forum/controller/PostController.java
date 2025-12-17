@@ -24,6 +24,8 @@ public class PostController {
 
     @Autowired
     private SectionService sectionService;
+    @Autowired
+    private com.forum.service.RootService rootService;
 
     @GetMapping("/list")
     public String postList(Model model,
@@ -191,6 +193,70 @@ public class PostController {
         } else {
             result.put("success", false);
             result.put("message", "删除失败");
+        }
+        return result;
+    }
+
+    @PostMapping("/setTop")
+    @ResponseBody
+    public Map<String, Object> setTop(@RequestParam Long id,
+                                      @RequestParam Integer isTop,
+                                      HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null || !rootService.isRoot(currentUser.getId())) {
+            result.put("success", false);
+            result.put("message", "权限不足");
+            return result;
+        }
+
+        if (isTop == null || (isTop != 0 && isTop != 1)) {
+            result.put("success", false);
+            result.put("message", "参数错误");
+            return result;
+        }
+
+        Post post = new Post();
+        post.setId(id);
+        post.setIsTop(isTop);
+        if (postService.updatePost(post)) {
+            result.put("success", true);
+            result.put("message", isTop == 1 ? "置顶成功" : "取消置顶成功");
+        } else {
+            result.put("success", false);
+            result.put("message", "操作失败");
+        }
+        return result;
+    }
+
+    @PostMapping("/setEssence")
+    @ResponseBody
+    public Map<String, Object> setEssence(@RequestParam Long id,
+                                          @RequestParam Integer isEssence,
+                                          HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null || !rootService.isRoot(currentUser.getId())) {
+            result.put("success", false);
+            result.put("message", "权限不足");
+            return result;
+        }
+
+        if (isEssence == null || (isEssence != 0 && isEssence != 1)) {
+            result.put("success", false);
+            result.put("message", "参数错误");
+            return result;
+        }
+
+        Post post = new Post();
+        post.setId(id);
+        post.setIsEssence(isEssence);
+        if (postService.updatePost(post)) {
+            result.put("success", true);
+            result.put("message", isEssence == 1 ? "设置精华成功" : "取消精华成功");
+        } else {
+            result.put("success", false);
+            result.put("message", "操作失败");
         }
         return result;
     }

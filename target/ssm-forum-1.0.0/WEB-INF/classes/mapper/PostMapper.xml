@@ -19,6 +19,7 @@
         <result column="update_time" property="updateTime"/>
         <result column="username" property="username"/>
         <result column="nickname" property="nickname"/>
+        <result column="avatar" property="avatar"/>
         <result column="section_name" property="sectionName"/>
     </resultMap>
 
@@ -31,7 +32,7 @@
     <sql id="Join_Column_List">
         p.id, p.title, p.content, p.user_id, p.section_id, p.view_count, p.reply_count,
         p.last_reply_time, p.last_reply_user_id, p.is_top, p.is_essence, p.status,
-        p.create_time, p.update_time, u.username, u.nickname, s.name as section_name
+        p.create_time, p.update_time, u.username, u.nickname, u.avatar, s.name as section_name
     </sql>
 
     <select id="findById" resultMap="BaseResultMap">

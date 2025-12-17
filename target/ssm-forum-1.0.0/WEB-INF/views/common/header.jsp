@@ -158,7 +158,7 @@
     <div class="header">
         <div class="container">
             <div class="header-content">
-                <a href="${pageContext.request.contextPath}/" class="logo">SSM论坛</a>
+                <a href="${pageContext.request.contextPath}/" class="logo">SK论坛</a>
                 <nav class="nav">
                     <a href="${pageContext.request.contextPath}/" class="${pageTitle eq '首页' ? 'active' : ''}">首页</a>
                     <a href="${pageContext.request.contextPath}/post/list" class="${pageTitle eq '所有帖子' ? 'active' : ''}">所有帖子</a>
@@ -168,10 +168,7 @@
                         <a href="${pageContext.request.contextPath}/reply/my">我的回复</a>
                         <c:if test="${not empty sessionScope.user and (sessionScope.user.role == 1 or sessionScope.user.role == '1')}">
                             <a href="${pageContext.request.contextPath}/user/manage" style="color: #dc3545;">用户管理</a>
-<<<<<<< HEAD
-=======
                             <a href="${pageContext.request.contextPath}/user/rootManage" style="color: #dc3545; margin-left:8px;">Root 管理</a>
->>>>>>> ShikinYuri
                         </c:if>
                     </c:if>
                 </nav>
@@ -182,6 +179,10 @@
                             <a href="${pageContext.request.contextPath}/user/register" class="btn btn-secondary">注册</a>
                         </c:when>
                         <c:otherwise>
+                            <c:if test="${not empty sessionScope.user.avatar}">
+                                <img src="${pageContext.request.contextPath}${sessionScope.user.avatar}" 
+                                     style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
+                            </c:if>
                             <span>欢迎, ${sessionScope.user.nickname ne null ? sessionScope.user.nickname : sessionScope.user.username}</span>
                             <c:if test="${not empty sessionScope.user and (sessionScope.user.role == 1 or sessionScope.user.role == '1')}">
                                 <span style="color: #dc3545; font-weight: bold;">[管理员]</span>

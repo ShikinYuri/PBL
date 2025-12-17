@@ -13,8 +13,20 @@
         <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px;">
             <!-- 左侧用户信息 -->
             <div style="text-align: center;">
-                <div style="width: 120px; height: 120px; background-color: #f0f0f0; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
-                    <span style="font-size: 48px; color: #999;">👤</span>
+                <div style="position: relative; display: inline-block;">
+                    <c:choose>
+                        <c:when test="${not empty user.avatar}">
+                            <img id="avatarImg" src="${pageContext.request.contextPath}${user.avatar}" 
+                                 style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #ddd;">
+                        </c:when>
+                        <c:otherwise>
+                            <div id="avatarImg" style="width: 120px; height: 120px; background-color: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #ddd;">
+                                <span style="font-size: 48px; color: #999;">👤</span>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                    <label for="avatarInput" style="position: absolute; bottom: 0; right: 0; background-color: #007bff; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px;">📷</label>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
                 </div>
                 <h3>${user.nickname ne null ? user.nickname : user.username}</h3>
                 <c:if test="${not empty sessionScope.user and (sessionScope.user.role == 1 or sessionScope.user.role == '1')}">
@@ -95,5 +107,52 @@
                 showMessage(response.message, 'error');
             }
         });
+    };
+
+    // 头像上传功能
+    document.getElementById('avatarInput').onchange = function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+
+        // 预览头像
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var avatarImg = document.getElementById('avatarImg');
+            if (avatarImg.tagName === 'IMG') {
+                avatarImg.src = e.target.result;
+            } else {
+                // 如果是div，替换为img
+                var img = document.createElement('img');
+                img.id = 'avatarImg';
+                img.src = e.target.result;
+                img.style = 'width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #ddd;';
+                avatarImg.parentNode.replaceChild(img, avatarImg);
+            }
+        };
+        reader.readAsDataURL(file);
+
+        // 上传文件
+        var formData = new FormData();
+        formData.append('avatar', file);
+
+        var _ctx = '${pageContext.request.contextPath}';
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', _ctx + '/user/uploadAvatar', true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    showMessage(response.message, 'success');
+                } else {
+                    showMessage(response.message, 'error');
+                    // 恢复原头像
+                    location.reload();
+                }
+            } else {
+                showMessage('上传失败', 'error');
+                location.reload();
+            }
+        };
+        xhr.send(formData);
     };
 </script>
